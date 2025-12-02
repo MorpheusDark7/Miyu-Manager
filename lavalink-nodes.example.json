@@ -1,0 +1,14 @@
+[
+  {
+    "name": "My Node",
+    "url": "host:2333",
+    "auth": "password",
+    "secure": false
+  },
+   {
+    "name": "My Node2",
+    "url": "host:2333",
+    "auth": "password",
+    "secure": false
+  }
+]

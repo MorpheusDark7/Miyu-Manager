@@ -1,0 +1,39 @@
+{
+  "name": "discord-manager-app",
+  "version": "2.2.0",
+  "description": "A Discord bot that manages server notifications for bot downtime.",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "dev": "nodemon --exec npm start",
+    "lint": "eslint src",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MorpheusDark7/discord-manager-app.git"
+  },
+  "author": "https://github.com/MorpheusDark7",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18.x"
+  },
+  "dependencies": {
+    "@discordjs/rest": "^2.6.0",
+    "@discordjs/voice": "^0.16.1",
+    "discord.js": "^14.21.0",
+    "dotenv": "^16.4.5",
+    "erela.js": "^2.4.0",
+    "humanize-duration": "^3.31.0",
+    "install": "^0.13.0",
+    "mongoose": "^7.6.3",
+    "npm": "^11.4.2",
+    "shoukaku": "^4.1.1",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "nodemon": "^3.1.4"
+  }
+}

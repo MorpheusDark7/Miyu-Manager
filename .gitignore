@@ -1,0 +1,7 @@
+.env
+node_modules/
+npm-debug.log
+.DS_Store
+lavalink-nodes.json
+logs/
+package-lock.json

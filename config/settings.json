@@ -1,0 +1,17 @@
+{
+  "token": "",
+  "prefix": ">",
+  "mongo_uri": "",
+  "owner_id": "",
+  "notification_role_id": "",
+  "presence_refresh_interval": 12000,
+  "lavalinkbroadcastchannelId": "",
+  "lavalink_status_interval": 60000,
+  "lavalink_nodes": [],
+  "lavalink_config": {},
+  "voice_channel_id": "",
+  "voice_autojoin": false,
+  "voice_status_text": "All Systems Online",
+  "mongo_retry_attempts": 5,
+  "mongo_retry_delay": 5000
+}
