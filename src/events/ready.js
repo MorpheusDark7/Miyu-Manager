@@ -24,7 +24,8 @@ module.exports = {
     }
 
     const presenceStatuses = [
-      { name: `${client.config.prefix}help | Status Tracker`, type: ActivityType.Watching },
+      { name: `${client.config.prefix}help | Manager of Miyu Development`, type: ActivityType.Watching },
+      { name: 'Miyu Development', type: ActivityType.Watching },
       { name: 'miyudevelopment.online', type: ActivityType.Watching }
     ];
 
@@ -34,7 +35,10 @@ module.exports = {
     client.presenceRotator = setInterval(async () => {
       try {
         _presenceIndex = (_presenceIndex + 1) % presenceStatuses.length;
-        await client.user.setPresence({ activities: [presenceStatuses[_presenceIndex]], status: 'dnd' });
+        await client.user.setPresence({
+          activities: [presenceStatuses[_presenceIndex]],
+          status: 'dnd'
+        });
       } catch (err) {
         logger.error('Failed to rotate presence:', err);
       }
@@ -57,22 +61,38 @@ module.exports = {
     if (voiceChannelId) {
       try {
         const { joinVoiceChannel, entersState, VoiceConnectionStatus } = require('@discordjs/voice');
-        const channel = client.channels.cache.get(voiceChannelId) || await client.channels.fetch(voiceChannelId).catch(() => null);
+        const channel =
+          client.channels.cache.get(voiceChannelId) ||
+          (await client.channels.fetch(voiceChannelId).catch(() => null));
+
         if (channel && channel.guild && channel.joinable !== false && channel.type) {
-          const connection = joinVoiceChannel({ channelId: voiceChannelId, guildId: channel.guild.id, adapterCreator: channel.guild.voiceAdapterCreator, selfDeaf: false, selfMute: false });
+          const connection = joinVoiceChannel({
+            channelId: voiceChannelId,
+            guildId: channel.guild.id,
+            adapterCreator: channel.guild.voiceAdapterCreator,
+            selfDeaf: false,
+            selfMute: false
+          });
+
           client.voiceConnection = connection;
-          try { await entersState(connection, VoiceConnectionStatus.Ready, 15000); logger.info('Joined configured voice channel'); } catch (e) { logger.warn('Voice connection not ready:', e?.message || e); }
-          
-          
+
+          try {
+            await entersState(connection, VoiceConnectionStatus.Ready, 15000);
+            logger.info('Joined configured voice channel');
+          } catch (e) {
+            logger.warn('Voice connection not ready:', e?.message || e);
+          }
+
+          // Update voice channel status ONLY (no bot presence change)
           try {
             await client.voiceStatusManager.updateVoiceStatus(voiceChannelId, voiceStatusText);
             logger.info('Voice channel status set successfully');
           } catch (e) {
             logger.warn('Failed to set voice channel status:', e?.message || e);
           }
-          
-          try { await client.user.setPresence({ activities: [{ name: voiceStatusText, type: ActivityType.Watching }], status: 'dnd' }); } catch (e) { logger.warn('Failed to set voice presence:', e?.message || e); }
-          if (client.presenceRotator) { clearInterval(client.presenceRotator); client.presenceRotator = null; }
+
+          // >>> Presence stays controlled by presenceRotator <<<
+          // No presence override. No rotator stop.
         } else {
           logger.warn('Configured voice channel not found or not joinable. Skipping auto-join.');
         }
